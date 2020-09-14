@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Feb 13 20:07:17 2019
+Created on Wed Feb 13 20:07:17 2020
 
-@author: icetong
+@author: 
 """
 
 import torch
@@ -19,7 +19,7 @@ alphabet = ''.join(source)
 weight=200
 height=60
 
-def predict(img_dir='./data/test'):
+def predict(img_dir='/home/VerificationDemo/data/test'):
     transforms = Compose([Resize(height, weight), ToTensor()])
     dataset = CaptchaData(img_dir, transform=transforms)
     cnn = CNN()
@@ -27,7 +27,7 @@ def predict(img_dir='./data/test'):
         cnn = cnn.cuda()
     cnn.eval()
     cnn.load_state_dict(torch.load(model_path))
-    
+     
     for k, (img, target) in enumerate(dataset):
         img = img.view(1, 3, height, weight).cuda()
         target = target.view(1, 4*36).cuda()
@@ -40,9 +40,6 @@ def predict(img_dir='./data/test'):
         target = torch.argmax(target, dim=1)
         output = output.view(-1, 4)[0]
         target = target.view(-1, 4)[0]
-        
-        print('pred: '+''.join([alphabet[i] for i in output.cpu().numpy()]))
-        print('true: '+ ''.join([alphabet[i] for i in target.cpu().numpy()]))
         
         plot.imshow(img.permute((0, 2, 3, 1))[0].cpu().numpy())
         plot.show()

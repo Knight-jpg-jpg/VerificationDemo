@@ -12,7 +12,7 @@ from models import CNN
 from datasets import CaptchaData
 from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, ToTensor, Resize
-
+import matplotlib.pyplot as plt
 import time
 import os
 
@@ -85,10 +85,26 @@ def train():
             acc = calculat_acc(output, target)
             acc_history.append(float(acc))
             loss_history.append(float(loss))
+           
+           
         print('train_loss: {:.4}|train_acc: {:.4}'.format(
                 torch.mean(torch.Tensor(loss_history)),
                 torch.mean(torch.Tensor(acc_history)),
                 ))
+        #图像化识别率
+        # x1 = range(0, 15)
+        # x2 = range(0, 15)
+        # y1 = acc_history
+        # y2 = loss_history
+        # plt.subplot(2, 1, 1)
+        # plt.plot(x1, y1, 'o-')
+        # plt.title('Test accuracy vs. epoches')
+        # plt.ylabel('Test accuracy')
+        # plt.subplot(2, 1, 2)
+        # plt.plot(x2, y2, '.-')
+        # plt.xlabel('Test loss vs. epoches')
+        # plt.ylabel('Test loss')
+        # plt.show()
         
         loss_history2 = []
         acc_history = []
@@ -110,6 +126,7 @@ def train():
                 ))
         print('epoch: {}|time: {:.4f}'.format(epoch, time.time()-start_))
         torch.save(cnn.state_dict(), model_path)
+
 
 if __name__=="__main__":
     train()
